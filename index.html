@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      .btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board"></div>
+    <script>
+      const M = 9;
+      const N = 9;
+      const board = document.getElementsByClassName("board")[0];
+      const matrixButton = [];
+      let isX = true;
+
+      function drawBoard() {
+        for (let i = 0; i < M; i++) {
+          // row
+          const row = document.createElement("div");
+          row.classList.add("row");
+
+          const rowButtons = [];
+
+          for (let j = 0; j < N; j++) {
+            // column
+            const column = document.createElement("button");
+            column.classList.add("btn");
+            row.appendChild(column);
+
+            rowButtons.push(column);
+          }
+
+          // insert row to board
+          board.appendChild(row);
+          matrixButton.push(rowButtons);
+        }
+      }
+
+      // should update function name
+      function addLogic() {
+        for (let i = 0; i < M; i++) {
+          for (let j = 0; j < N; j++) {
+            const button = matrixButton[i][j];
+
+            button.addEventListener("click", () => {
+              button.textContent = isX ? "X" : "O";
+              isX = !isX;
+            });
+          }
+        }
+      }
+
+      drawBoard();
+      addLogic();
+    </script>
+  </body>
+</html>
