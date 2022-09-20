@@ -25,6 +25,7 @@
       const board = document.getElementsByClassName("board")[0];
       const matrixButton = [];
       let isX = true;
+      let isO = false;
 
       function drawBoard() {
         for (let i = 0; i < M; i++) {
@@ -54,10 +55,11 @@
         for (let i = 0; i < M; i++) {
           for (let j = 0; j < N; j++) {
             const button = matrixButton[i][j];
-
             button.addEventListener("click", () => {
-              button.textContent = isX ? "X" : "O";
-              isX = !isX;
+              if(button.textContent === "") {
+                button.textContent = isX ? "X" : "O";
+                isX = !isX;
+              } else return;
             });
           }
         }
