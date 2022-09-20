@@ -26,6 +26,9 @@
       const matrixButton = [];
       let isX = true;
       let isO = false;
+      const ST_DRAW = 0;
+      const ST_WIN = 1;
+      const ST_NORMAL = 2;
 
       function drawBoard() {
         for (let i = 0; i < M; i++) {
@@ -63,10 +66,122 @@
             });
           }
         }
+
+        let count = 0;
+        for (let col = 0; col < M; col++) {
+            let cell = matrixButton[i][col];
+            if (cell.value == currentPlayer) {
+                count++;
+                if (count >= 5) {
+                    console.log("Ngang");
+                    return ST_WIN;
+                }
+            } else {
+                count = 0;
+            }
+        }
       }
 
+      function checkWin(i, j) {
+        // check ngang
+        let count = 0;
+        for (let col = 0; col < M; col++) {
+            let cell = matrixButton[i][col];
+            if (cell.value == currentPlayer) {
+                count++;
+                if (count >= 5) {
+                    console.log("Ngang");
+                    return ST_WIN;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        // check doc
+        count = 0;
+        let currentPlayer = button.textContent;
+        for (let row = 0; row < N; row++) {
+            let cell = matrixButton[row][j];
+            if (cell.value === currentPlayer) {
+                count++;
+                if (count == 5) {
+                    console.log("Dọc");
+                    return ST_WIN;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        // cheo trai
+        let min = Math.min(i, j);
+        let topI = i - min;
+        let topJ = j - min;
+        count = 0;
+
+        for (; topI < N && topJ < M; topI++, topJ++) {
+           let cell = matrixButton[row][j];
+            if (cell.value === currentPlayer) {
+                count++;
+                if (count == 5) {
+                    console.log("Dọc");
+                    return ST_WIN;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        // cheo phai
+        min = Math.min(i, j);
+        topI = i - min;
+        topJ = j + min;
+        count = 0;
+        if (topJ >= M) {
+            let du = topJ - (M - 1);
+            topI = topI + du;
+            topJ = M - 1;
+        }
+
+        for (; topI < N && topJ >= 0; topI++, topJ--) {
+           let cell = matrix[topI][topJ];
+            if (cell.value === currentPlayer) {
+                count++;
+                if (count == 5) {
+                    console.log("Dọc");
+                    return ST_WIN;
+                }
+            } else {
+                count = 0;
+            }
+        }
+
+        if(this.isFull()){
+            return ST_DRAW;
+        }
+
+        return ST_NORMAL;
+      }
+
+      function isFull() {
+        const number = M * N;
+        let k = 0;
+        for(let i = 0; i < N; i++) {
+          for(let j = 0; j < M; j++) {
+            let cell = matrixButton[i][j];
+            if(cell.value != "") {
+              k++;
+            }
+          }
+        }
+        return k == number;
+      }
+      
       drawBoard();
       addLogic();
+      checkWin();
+      isFull();
     </script>
   </body>
 </html>
